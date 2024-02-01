@@ -1,0 +1,194 @@
+// Base class for users
+class User {
+  constructor(name, email, password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+
+  // Abstract method for login
+  login() {
+    throw new Error('Login method must be implemented by derived class.');
+  }
+
+  // Abstract method for logout
+  logout() {
+    throw new Error('Logout method must be implemented by derived class.');
+  }
+}
+
+// Derived class for interns
+class Intern extends User {
+  constructor(name, email, password) {
+    super(name, email, password);
+    this.role = 'Intern';
+    this.profile = {};
+    this.course = []; // Initialize course as an empty array
+    this.learningCommunities = [];
+  }
+
+  // Implementing abstract method for login
+  login() {
+    console.log(`${this.name} logged in as an intern.`);
+  }
+
+  // Implementing abstract method for logout
+  logout() {
+    console.log(`${this.name} logged out as an intern.`);
+  }
+
+  // Function to submit assignments
+  submitAssignment(assignment) {
+    console.log(`${this.name} submitted assignment: ${assignment.task_Id}`);
+  }
+
+  // Function to change profile
+  changeProfile(profile) {
+    this.profile = profile;
+    console.log(`${this.name} changed profile: ${JSON.stringify(profile)}`);
+  }
+
+  // Function to access course
+  accessCourse(course) {
+    this.course.push(course);
+    console.log(`${this.name} accessed course: ${course}`);
+  }
+
+  // Function to sign up for learning community
+  signUpToLearningCommunity(learningCommunity) {
+    this.learningCommunities.push(learningCommunity);
+    console.log(`${this.name} signed up for learning community: ${learningCommunity}`);
+  }
+}
+
+// Derived class for administrators
+class Administrator extends User {
+  constructor(name, email) {
+    super(name, email);
+    this.role = 'Administrator';
+  }
+
+  // Implementing abstract method for login
+  login() {
+    console.log(`${this.name} logged in as an administrator.`);
+  }
+
+  // Implementing abstract method for logout
+  logout() {
+    console.log(`${this.name} logged out as an administrator.`);
+  }
+}
+
+// Derived class for tutors
+class Tutor extends User {
+  constructor(name, email) {
+    super(name, email);
+    this.role = 'Tutor';
+    this.lectureContents = [];
+    this.resources = [];
+  }
+
+  // Implementing abstract method for login
+  login() {
+    console.log(`${this.name} logged in as a tutor.`);
+  }
+
+  // Implementing abstract method for logout
+  logout() {
+    console.log(`${this.name} logged out as a tutor.`);
+  }
+
+  // Function to grade assignments
+  gradeAssignment(intern, assignment, score) {
+    console.log(`Tutor ${this.name} graded ${intern}'s assignment ${assignment} with ${score}`);
+  }
+
+  // Function to upload lecture contents
+  uploadLectureContent(content) {
+    this.lectureContents.push(content);
+    console.log(`Tutor ${this.name} uploaded new lecture content: ${content}`);
+  }
+
+  // Function to assign resources
+  assignResources(resources) {
+    this.resources = this.resources.concat(resources);
+    console.log(`Tutor ${this.name} assigned resources: ${resources.join(',')}`);
+  }
+
+  // Function to interact with students
+  interactWithStudents() {
+    console.log(`Tutor ${this.name} is interacting with students.`);
+  }
+
+  // Function to assign tasks
+  assignTasks(tasks) {
+    console.log(`Tutor ${this.name} assigned tasks: ${tasks.join(', ')}`);
+  }
+}
+
+// Class for assignments/tasks
+class Assignment {
+  constructor(task_Id, description, deadline) {
+    this.task_Id = task_Id;
+    this.description = description;
+    this.deadline = deadline;
+  }
+}
+
+// Class for learning paths
+class LearningPath {
+  constructor(name, description) {
+    this.name = name;
+    this.description = description;
+    this.course = [];
+    this.courseStructure = {};
+  }
+
+  // Function to publish course structure
+  publishCourseStructure(courseStructure) {
+    this.courseStructure = courseStructure;
+    console.log(`Course structure published for learning path "${this.name}": ${JSON.stringify(courseStructure)}`);
+  }
+}
+
+// Class for learning communities
+class LearningCommunity {
+  constructor(name, description) {
+    this.name = name;
+    this.description = description;
+    this.members = [];
+  }
+
+  // Function to add members to the learning community
+  addMember(member) {
+    this.members.push(member);
+    console.log(`${member.name} joined the learning community.`);
+  }
+}
+
+// Example usage:
+
+const intern = new Intern('Kingsley Okon', 'kingsleyokon610@gmail.com');
+intern.login();
+intern.changeProfile({ age: 35, interests: ['Web3 Development', 'Design'] });
+intern.accessCourse('CSS Styling');
+intern.signUpToLearningCommunity('Discord');
+intern.logout();
+
+const admin = new Administrator('Admin User', 'admin@example.com');
+admin.login();
+
+const tutor = new Tutor('Edidiong Moses', 'tutor@example.com');
+tutor.login();
+tutor.gradeAssignment(intern.name, 'JavaScript Basics', 'Score');
+tutor.uploadLectureContent('Ethereum Basics');
+tutor.assignResources(['Ethereum Guide', 'Sample Code']);
+tutor.interactWithStudents();
+tutor.assignTasks(['Task 1', 'Explore cryptography']);
+tutor.logout();
+
+const learningPath = new LearningPath('Frontend', 'Building User Interfaces');
+learningPath.publishCourseStructure({ modules: ['HTML', 'CSS', 'JavaScript'] });
+
+const learningCommunity = new LearningCommunity('Discord', 'Community for coding enthusiasts');
+learningCommunity.addMember(intern);
